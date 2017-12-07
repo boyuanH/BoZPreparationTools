@@ -200,15 +200,15 @@ namespace BoZPreparation_Tool
             FileInfo fileInfo = new FileInfo(filePath);
             if (!fileInfo.Exists)
             {
-                fileInfo.Create();
+                File.WriteAllLines(fileInfo.FullName,new string[] { @"[CameraSetting]", @"CameraLocationLongitude=", @"CameraLocationLatitude=", @"TargetLocationLongitude=", @"TargetLocationLatitude=", @"CameraHeight=",@"CameraAngle=" } );
             }
             IniFiles iniFile = new IniFiles(fileInfo.FullName);
-            CameraLocationLongitude = iniFile.IniReadValue("CameraSetting", "CameraLocationLongitude");
-            CameraLocationLatitude = iniFile.IniReadValue("CameraSetting", "CameraLocationLatitude");
-            TargetLocationLongitude = iniFile.IniReadValue("CameraSetting", "TargetLocationLongitude");
-            TargetLocationLatitude = iniFile.IniReadValue("CameraSetting", "TargetLocationLatitude");
-            CameraHeight = iniFile.IniReadValue("CameraSetting", "CameraHeight");
-            CameraAngle = iniFile.IniReadValue("CameraSetting", "CameraAngle");
+            iniFile.IniWriteValue("CameraSetting", "CameraLocationLongitude",CameraLocationLongitude);
+            iniFile.IniWriteValue("CameraSetting", "CameraLocationLatitude", CameraLocationLatitude);
+            iniFile.IniWriteValue("CameraSetting", "TargetLocationLongitude", TargetLocationLongitude);
+            iniFile.IniWriteValue("CameraSetting", "TargetLocationLatitude", TargetLocationLatitude);
+            iniFile.IniWriteValue("CameraSetting", "CameraHeight", CameraHeight);
+            iniFile.IniWriteValue("CameraSetting", "CameraAngle", CameraAngle);
         }
 
         private void CameraSettingPageCameraLocationShowmapBtn_Click(object sender, RoutedEventArgs e)
