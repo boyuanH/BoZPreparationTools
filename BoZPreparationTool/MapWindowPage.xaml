@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="BoZPreparation_Tool.MapWindowPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:src="clr-namespace:BoZPreparation_Tool"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid Margin="10 5 10 15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="5 25 5 0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+            </Grid>
+            <Grid Grid.Column="0" HorizontalAlignment="Left" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label Content="Longitude(°)" FontSize="16" Margin="25 5 5 5" MinWidth="110"/>
+                        <TextBox Name="MapWindowPageLongitudeTextBox" Margin="5" MinWidth="160" VerticalContentAlignment="Center" Text="{Binding MapLongitude,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label Content="Latitude(°)" FontSize="16" Margin="25 5 5 5" MinWidth="110"/>
+                        <TextBox Name="MapWindowPageLatitudeTextBox" Margin="5" MinWidth="160" VerticalContentAlignment="Center" Text="{Binding MapLatitude,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="1" HorizontalAlignment="Right" Margin="0 0 20 0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" VerticalAlignment="Center">
+                        <Button Name="MapWindowPageZoomInBtn" Content="Zoom In" FontSize="16" MinHeight="30" MinWidth="100" Click="MapWindowPageZoomInBtn_Click"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" VerticalAlignment="Center">
+                        <Button Name="MapWindowPageZoomOutBtn" Content="Zoom out" FontSize="16" MinHeight="30" MinWidth="100" Click="MapWindowPageZoomOutBtn_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+        <GroupBox Name="mapgroup" Grid.Row="1" Margin="5" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+            <src:MapControl x:Name="mapControl" Zoom="13" MaxZoom="24" MinZoom="1" />
+        </GroupBox>
+        <StackPanel Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0 0 30 10">
+           <Button Name="MapWindowPageCancelBtn" Content="Cancel" FontSize="16" MinWidth="100" MinHeight="30" Margin=" 5 0 20 0" Click="MapWindowPageCancelBtn_Click"/>
+           <Button Name="MapWindowPageOKBtn"     Content="OK"     FontSize="16" MinWidth="100" MinHeight="30" Margin=" 20 0 5 0" Click="MapWindowPageOKBtn_Click"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

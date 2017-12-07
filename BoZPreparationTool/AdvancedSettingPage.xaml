@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="BoZPreparation_Tool.AdvancedSettingPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid Margin="10 5 10 15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" VerticalAlignment="Center">
+            <Label Margin="30 5" Content="Advanced Setting" FontSize="42" FontWeight="Bold" />
+        </StackPanel>
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="45 0 0 0">
+            <CheckBox Name="AdvancedSettingPageBirdsViewCreationCheckBtn" Content="Birds View creation" FontSize="24" IsChecked="{Binding IsBirdsViewCreation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+        <StackPanel Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="45 0 0 0">
+            <CheckBox Name="AdvancedSettingPageObjectDectionCheckBtn" Content="Object detection" FontSize="24" IsChecked="{Binding IsObjectDetection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="45 0 0 0">
+            <CheckBox Name="AdvancedSettingPageDetectionConfirmationCheckBtn" Content="Detection confirmation" FontSize="24" IsChecked="{Binding IsDetectionConfirmation, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="45 0 0 0">
+            <CheckBox Name="AdvancedSettingPageHeatMapCreationCheckBtn" Content="Heap Map creation" FontSize="24" IsChecked="{Binding IsHeapMapCreation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="6" Height="50" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+            <Button Name="AdvancedSettingPageBackBtn" MinWidth="80" Margin="15 0 20 0" Content="Back" FontSize="16" Click="AdvancedSettingPageBackBtn_Click" />
+            <Button Name="AdvancedSettingPageOKBtn" MinWidth="80" Margin="15 0 15 0" Content="OK" FontSize="16" Click="AdvancedSettingPageOKBtn_Click" />
+        </StackPanel>
+    </Grid>
+</UserControl>
