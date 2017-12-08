@@ -329,12 +329,12 @@ namespace BoZPreparation_Tool
             {
                 dateTime = new DateTime(Convert.ToInt32(timeDefine[0]), Convert.ToInt32(timeDefine[1]), Convert.ToInt32(timeDefine[2]), Convert.ToInt32(timeDefine[3]), Convert.ToInt32(timeDefine[4]), Convert.ToInt32(timeDefine[5]), Convert.ToInt32(timeDefine[6]));
             }
-            catch (ArgumentOutOfRangeException e)
+            catch (ArgumentOutOfRangeException )
             {
                 MessageBox.Show("Please input currect DateTime");
                 return DateTime.MinValue;
             }
-            catch (FormatException e)
+            catch (FormatException )
             {
                 MessageBox.Show("Please input currect Number of DateTime");
                 return DateTime.MinValue;
@@ -369,6 +369,17 @@ namespace BoZPreparation_Tool
 
             string[] frameList = getFrameConfigFromCSVFile(timestampFileInfo.FullName, startDateTime, endDateTime);
             //readFile
+            if(frameList == null)
+            {
+                BoZConstant.nStartFrameNo = "";
+                BoZConstant.ProcessingFrameNum = "";
+                return false;
+            }
+
+            BoZConstant.nStartFrameNo = frameList[0];
+            BoZConstant.ProcessingFrameNum = frameList[1];
+
+            return true;
         }
 
         private string[] getFrameConfigFromCSVFile(string filePath,DateTime startTime,DateTime endTime)
@@ -381,12 +392,29 @@ namespace BoZPreparation_Tool
             StreamReader streamReader = new StreamReader(fileStream);
             string strLine = "";
             string[] aryLine = null;
-            int columnCount = 0;
 
-            while((strLine = streamReader.ReadLine()) != null)
+            while(((strLine = streamReader.ReadLine()) != null) && (!string.IsNullOrWhiteSpace(strLine)))
             {
                 aryLine = strLine.Split(',');
-
+                DateTime currentTime = new DateTime(Convert.ToInt32(aryLine[1]), Convert.ToInt32(aryLine[2]), Convert.ToInt32(aryLine[3]), Convert.ToInt32(aryLine[4]), Convert.ToInt32(aryLine[5]), Convert.ToInt32(aryLine[6]), Convert.ToInt32(aryLine[7]));
+                if (currentTime < startTime)
+                {
+                    continue;
+                }else if(startTime <= currentTime && currentTime <= endTime)
+                {
+                    if (string.IsNullOrWhiteSpace(startFrame))
+                    {
+                        startFrame = aryLine[0];
+                    }
+                    else
+                    {
+                        endFrame = aryLine[0];
+                    }
+                }
+                else
+                {
+                    break;
+                }
             }
 
             if((!string.IsNullOrWhiteSpace(startFrame)) && (!string.IsNullOrWhiteSpace(endFrame)))
@@ -409,22 +437,14 @@ namespace BoZPreparation_Tool
             try
             {
                 result = Convert.ToInt32(str);
-            }catch(Exception e)
+            }catch(Exception )
             {
                 result = -1;
             }
             return result;
         }
 
-        private void ReadCSV(string filePath)
-        {
-            DataTable dt = new DataTable();
-            FileStream fstream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            StreamReader sReader = new StreamReader(fstream);
-            string strLine = "";
-            string[] aryLine = null;
-            string[] tableHead = null;
-        }
+
 
     }
 }
