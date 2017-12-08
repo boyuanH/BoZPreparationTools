@@ -58,6 +58,9 @@ namespace BoZPreparation_Tool
             }
         }
 
+        private DateTime startDateTime;
+        
+
         private string startHour;
         public string StartHour
         {
@@ -100,6 +103,8 @@ namespace BoZPreparation_Tool
             }
         }
 
+        private DateTime endDateTime;
+
         private string endHour;
         public string EndHour
         {
@@ -141,6 +146,10 @@ namespace BoZPreparation_Tool
                 OnPropertyChanged("EndSecond");
             }
         }
+
+
+
+
 
         public PictureSettingPage()
         {

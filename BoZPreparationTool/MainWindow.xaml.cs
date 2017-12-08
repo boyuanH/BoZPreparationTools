@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -78,6 +79,9 @@ namespace BoZPreparation_Tool
 
         public void ShowProcessingPage(object sender,EventArgs e)
         {
+            //Check Frame
+
+
             //UnstableAreaDetectionDir = @".\DCD";
             UnstableAreaDetectionDir = @".";
             DirectoryInfo UnstableAreaDetectionDirInfo = new DirectoryInfo(UnstableAreaDetectionDir);
@@ -112,17 +116,17 @@ namespace BoZPreparation_Tool
 
             if (advancedSettingPage.IsDetectionConfirmation == true)
             {
-                //AddDCDTask();
+                AddDCDTask();
             }
 
             if (advancedSettingPage.IsObjectDetection == true)
             {
-                //AddLRU3DTask();
+                AddLRU3DTask();
             }
 
             if(advancedSettingPage.IsHeapMapCreation == true)
             {
-                //AddHeatmapTask();
+                AddHeatmapTask();
             }
             processingPage.ProcessingPageOKBtn.IsEnabled = false;
             worker.RunWorkerAsync();
@@ -309,65 +313,118 @@ namespace BoZPreparation_Tool
 
         }
 
-        //         private void CallIniWriterToWriteParameters(string fileName, Dictionary<string, string> paras)
-        //         {
-        //             string parastring = " ";
-        //             foreach(var item in paras)
-        //             {
-        //                 parastring += " -" + item.Key.ToString() + " "+item.Value.ToString();
-        //             }
-        //             ProcessStartInfo processInfo = new ProcessStartInfo("IniWriter.exe", fileName + parastring);
-        //             processInfo.CreateNoWindow = false;
-        //             processInfo.UseShellExecute = false;
-        //             processInfo.WindowStyle = ProcessWindowStyle.Hidden;
-        //             processInfo.RedirectStandardOutput = true;
-        // 
-        //             Process iniWriteProcess = Process.Start(processInfo);
-        //             iniWriteProcess.WaitForExit();
-        //             //返回值为 0
-        //             StreamReader reader = iniWriteProcess.StandardOutput;
-        //             string outputstring = reader.ReadToEnd();
-        // 
-        //         }
-        // 
-        //         private void CallBirdsView()
-        //         {
-        //             //Set BirdView.ini
-        //             Dictionary<string, string> birdsPara = new Dictionary<string, string>();
-        //             birdsPara.Add(BoZConstant.BirdViewConfigPara_CameraHeight, cameraSettingPage.CameraHeight);
-        //             birdsPara.Add(BoZConstant.BirdViewConfigPara_CameraPitch, cameraSettingPage.CameraAngle);
-        //             birdsPara.Add(BoZConstant.BirdViewConfigPara_StartFrameNo, BoZConstant.nStartFrameNo);
-        //             birdsPara.Add(BoZConstant.BirdViewConfigPara_ProcessingFrameNum, BoZConstant.ProcessingFrameNum);
-        //             birdsPara.Add(BoZConstant.BirdViewConfigPara_ObjInfo, "1");
-        //             birdsPara.Add(BoZConstant.BirdViewConfigPara_SaveDataPath, strTempDir);
-        //             birdsPara.Add(BoZConstant.BirdViewConfigPara_FrameSkipNum, "1");
-        //             CallIniWriterToWriteParameters(BoZConstant.BirdViewConfigFile, birdsPara);
-        // 
-        //             if (advancedSettingPage.IsBirdsViewCreation == true)
-        //             {
-        //                 ProcessStartInfo processInfo = new ProcessStartInfo("BirdsView.exe", @" " + CaptureRawDataDir);
-        //                 processInfo.CreateNoWindow = false;
-        //                 processInfo.UseShellExecute = false;
-        //                 processInfo.WindowStyle = ProcessWindowStyle.Hidden;
-        //                 processInfo.RedirectStandardOutput = true;
-        //                 Process birdViewProcess = Process.Start(processInfo);
-        //                 birdViewProcess.WaitForExit();
-        // 
-        //                 string path = System.IO.Path.Combine(UnstableAreaDetectionDir, "data", "matched", "matched");
-        //                 string pattern = "*.png";
-        //                 string[] strFileName = Directory.GetFiles(path, pattern);
-        //                 foreach (var item in strFileName)
-        //                 {
-        //                     File.Delete(item);
-        //                 }
-        //                 string copyresultExePara = @" -org "+ strTempDir + @"\umap -dst "+UnstableAreaDetectionDir +@"\data\matched\train -mode 1 -nStartFrameNo " + BoZConstant.nStartFrameNo +@" -nFrameNum "+BoZConstant.ProcessingFrameNum;
-        //                 ProcessStartInfo processCopyResultsInfo = new ProcessStartInfo(BoZConstant.CopyResultsExe, @" " + CaptureRawDataDir);
-        //                 processInfo.CreateNoWindow = false;
-        //                 processInfo.UseShellExecute = false;
-        // 
-        //             }
-        // 
-        //         }
+        private DateTime getDateTime(string[] timeDefine)
+        {
+            DateTime dateTime = DateTime.MinValue;
+            if(timeDefine == null)
+            {
+                return dateTime;
+            }
+            if(timeDefine.Length != 7)
+            {
+                return dateTime;
+            }
+
+            try
+            {
+                dateTime = new DateTime(Convert.ToInt32(timeDefine[0]), Convert.ToInt32(timeDefine[1]), Convert.ToInt32(timeDefine[2]), Convert.ToInt32(timeDefine[3]), Convert.ToInt32(timeDefine[4]), Convert.ToInt32(timeDefine[5]), Convert.ToInt32(timeDefine[6]));
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                MessageBox.Show("Please input currect DateTime");
+                return DateTime.MinValue;
+            }
+            catch (FormatException e)
+            {
+                MessageBox.Show("Please input currect Number of DateTime");
+                return DateTime.MinValue;
+            }
+            return dateTime;
+        }
+
+        private bool SetFrameParameter()
+        {
+            DateTime startDateTime = getDateTime(new string[] { "2007", "6", "27", pictureSettingPage.StartHour, pictureSettingPage.StartMinute, pictureSettingPage.StartSecond, "000" });
+            if(startDateTime == DateTime.MinValue)
+            {
+                return false;
+            }
+            DateTime endDateTime = getDateTime(new string[] { "2017", "6", "27", pictureSettingPage.EndHour, pictureSettingPage.EndMinute, pictureSettingPage.EndSecond, "999" });
+            if(endDateTime == DateTime.MinValue)
+            {
+                return false;
+            }
+            if (startDateTime >= endDateTime)
+            {
+                MessageBox.Show("Please input currect DateTime");
+                return false;
+            }
+            //check file
+            FileInfo timestampFileInfo = new FileInfo(System.IO.Path.Combine(CaptureRawDataDir, BoZConstant.FrameCSVFileName));
+            if (!timestampFileInfo.Exists)
+            { 
+                MessageBox.Show(BoZConstant.FrameCSVFileName + " File Not found");
+                return false;
+            }
+
+            string[] frameList = getFrameConfigFromCSVFile(timestampFileInfo.FullName, startDateTime, endDateTime);
+            //readFile
+        }
+
+        private string[] getFrameConfigFromCSVFile(string filePath,DateTime startTime,DateTime endTime)
+        {
+            string[] frameList = null;
+            string startFrame = "";
+            string endFrame = "";
+
+            FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            StreamReader streamReader = new StreamReader(fileStream);
+            string strLine = "";
+            string[] aryLine = null;
+            int columnCount = 0;
+
+            while((strLine = streamReader.ReadLine()) != null)
+            {
+                aryLine = strLine.Split(',');
+
+            }
+
+            if((!string.IsNullOrWhiteSpace(startFrame)) && (!string.IsNullOrWhiteSpace(endFrame)))
+            {
+                frameList = new string[] { startFrame, endFrame };
+            }
+
+            return frameList;
+        }
+
+        private int getDateOrTimeFromString(string str)
+        {
+            int result = -1;
+            if (string.IsNullOrWhiteSpace(str))
+            {
+                MessageBox.Show("Please input currect DateTime");
+                return result;
+            }
+
+            try
+            {
+                result = Convert.ToInt32(str);
+            }catch(Exception e)
+            {
+                result = -1;
+            }
+            return result;
+        }
+
+        private void ReadCSV(string filePath)
+        {
+            DataTable dt = new DataTable();
+            FileStream fstream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            StreamReader sReader = new StreamReader(fstream);
+            string strLine = "";
+            string[] aryLine = null;
+            string[] tableHead = null;
+        }
 
     }
 }

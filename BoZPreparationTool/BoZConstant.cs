@@ -33,7 +33,7 @@ namespace BoZPreparation_Tool
         public static string LRU3DConfigPara_SaveDataPath = @"SaveDataPath";
 
         public static string CopyResultsExe = "CopyResults.exe";
-
+        public static string FrameCSVFileName = @"timestamp.csv";
 
 
     }

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800">
+             d:DesignHeight="800" d:DesignWidth="1280">
     <Grid Margin="10 5 10 15">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*" />
@@ -50,7 +50,10 @@
             </Grid.ColumnDefinitions>
             <StackPanel  Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Label Content="Start Time" VerticalContentAlignment="Center" FontWeight="Bold" MinWidth="140" FontSize="24" Margin="30 5 5 5" />
-                <TextBox Name="StartTimeHourTextbox" VerticalContentAlignment="Center" Height="35"  Width="45" Text="{Binding StartHour,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                
+                <!-- <TextBox Name="StartTimeYearTextbox" VerticalContentAlignment="Center" Height="34" Width="45" /> -->
+                
+                <TextBox Name="StartTimeHourTextbox" VerticalContentAlignment="Center" Height="34"  Width="45" Text="{Binding StartHour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <Viewbox VerticalAlignment="Center" Margin="10 5 10 5">
                     <TextBlock VerticalAlignment="Center" Text=":" FontWeight="Bold" />
                 </Viewbox>
